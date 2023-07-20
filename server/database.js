@@ -7,6 +7,7 @@ const pool = new Pool(dbConfig);
 
 module.exports = {
   getReviews: async (product, page, count, sort) => {
+    console.log('count:', count);  
     page = (page - 1) * count;
     if ((sort === 'helpful') || (sort === 'relevant')) {
       sort = 'helpfulness';
@@ -19,12 +20,11 @@ module.exports = {
       const query =
         `SELECT * FROM reviews WHERE product_id = ${product} ORDER BY ${sort} DESC LIMIT ${count} OFFSET ${page}`;
       const result = await pool.query(query);
-
       const reviewIds = result.rows.map((row) => row.id);
       const photosQuery = await pool.query(`
           SELECT * FROM reviews_photos WHERE review_id IN (${reviewIds.join(',')})
         `);
-      const photosByReviewId = photosQuery.rows.reduce((acc, photo) => {
+	    const photosByReviewId = photosQuery.rows.reduce((acc, photo) => {
         if (!acc[photo.review_id]) {
           acc[photo.review_id] = [];
         }

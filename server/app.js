@@ -13,16 +13,14 @@ app.use(function(req, res, next) {
 });
 app.use(morgan('dev'));
 app.use(express.json());
+app.use(express.static('/home/ubuntu/.ssh/SDC-Reviews'));
 app.use('/reviews', router);
-
 router.get('/', (req, res)=> {
   // eslint-disable-next-line camelcase
 
   let {product_id, sort, count, page} = req.query;
   page = page || 1;
-  if (typeof(count) !== 'number') {
-    count = 5;
-  }
+  count = count || 5;
   sort = typeof sort !== 'undefined' ? sort : 'relevant';
   getReviews(product_id, page, count, sort)
     .then((reviews) => {

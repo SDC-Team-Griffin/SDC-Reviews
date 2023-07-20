@@ -9,7 +9,7 @@
     "reviews-stress-rps": "k6 run tests/stress-tests/getReviewsRPS.js",
     "meta-stress-rps": "k6 run tests/stress-tests/getReviewsMetaRPS.js",
     "meta-stress": "k6 run tests/stress-tests/getReviewsMeta.js",
-
+    "server": "pm2 start server/server.js",
     "server-dev": "npx nodemon --watch server server/server.js",
     "load": "node schema/load.js"
   },
